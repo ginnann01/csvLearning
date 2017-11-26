@@ -1,10 +1,11 @@
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
 
 
 class plot():
-    def __init__(self, flag):
+    def __init__(self, filename):
         sin = []
         ans = []
         
@@ -13,15 +14,15 @@ class plot():
             for row in reader:
                 sin.append(row)
                 
-        if flag:
-            with open("ans.csv", "r") as f:
+        if len(filename) != 0:
+            with open(filename, "r") as f:
                 reader = csv.reader(f)
                 for row in reader:
                     ans.append(row)
         
         sin = np.array(sin).T
         
-        if flag:
+        if len(filename) != 0:
             ans = np.array(ans).T
         
         fig = plt.figure()
@@ -30,7 +31,7 @@ class plot():
         ax1.plot(sin[0], sin[2], label='A=2, f=2')
         ax1.plot(sin[0], sin[3], label='A=1, f=3')
         ax1.legend()
-        if flag:
+        if len(filename) != 0:
             ax2 = fig.add_subplot(212)
             ax2.plot(ans[0], ans[1], label='Answer')
             ax2.legend(loc="lower left")
@@ -38,4 +39,9 @@ class plot():
         plt.show()
 
 if __name__ == '__main__':
-    p = plot(False)
+    args = sys.argv
+    if len(args) <= 1:
+        ans = ""
+    else:
+        ans = args[1]
+    p = plot(ans)
